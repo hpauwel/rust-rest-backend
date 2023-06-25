@@ -2,12 +2,12 @@ use crate::models::*;
 use crate::establish_connection;
 use diesel::prelude::*;
 
-pub fn load_user(id: i32) -> ResponseUser {
+pub fn load_user(uid: i32) -> ResponseUser {
     use crate::schema::users::dsl::*;
 
     let connection = &mut establish_connection();
     let result: User = users
-        .filter(id.eq(id))
+        .filter(id.eq(uid))
         .first::<User>(connection)
         .expect("Error loading user");
 
