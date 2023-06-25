@@ -28,7 +28,7 @@ fn get_user(id: i32) -> Json<ResponseUser> {
 
 #[post("/users/new", data = "<new_user_data>")]
 fn create_user(new_user_data: Json<NewUser>) -> String {
-    insert_user(new_user_data.into_inner());
+    insert_user(&mut new_user_data.into_inner());
     String::from("Created the new user!")
 }
 
