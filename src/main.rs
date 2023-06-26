@@ -2,6 +2,7 @@
 extern crate chrono;
 extern crate diesel;
 use rest_backend::*;
+use rocket::Request;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 
@@ -26,6 +27,11 @@ fn get_user(id: i32) -> Json<ResponseUser> {
     Json(load_user(id))
 }
 
+#[catch(500)]
+fn error_catcher(req: &Request) -> String {
+    format!("Sorry, '{}' is not a valid path", req.uri())
+}
+
 #[post("/users/new", data = "<new_user_data>")]
 fn create_user(new_user_data: Json<NewUser>) -> String {
     insert_user(&mut new_user_data.into_inner());
@@ -41,4 +47,5 @@ fn rocket() -> _ {
         get_user,
         create_user
     ])
+    .register("/", catchers![error_catcher])
 }

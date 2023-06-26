@@ -21,7 +21,7 @@ pub struct NewUser<'a> {
     pub password: &'a str
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 pub struct ResponseUser {
     pub id: i32,
     pub username: String,
