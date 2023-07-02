@@ -12,6 +12,9 @@ mod new_user;
 use crate::new_user::insert_user;
 use crate::models::*;
 
+mod show_post;
+use crate::show_post::*;
+
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
@@ -19,7 +22,7 @@ fn index() -> &'static str {
 
 #[get("/users")]
 fn get_users() -> Json<Vec<ResponseUser>> {
-    Json(load_all())
+    Json(show_user::load_all())
 }
 
 #[get("/users/<id>")]
@@ -38,6 +41,11 @@ fn create_user(new_user_data: Json<NewUser>) -> String {
     String::from("Created the new user!")
 }
 
+#[get("/posts")]
+fn get_posts() -> Json<Vec<ResponsePost>> {
+    Json(show_post::load_all())
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -45,7 +53,8 @@ fn rocket() -> _ {
     .mount("/api", routes![
         get_users,
         get_user,
-        create_user
+        create_user,
+        get_posts
     ])
     .register("/", catchers![error_catcher])
 }
